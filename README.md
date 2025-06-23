@@ -26,18 +26,18 @@ Users can input coordinates or click on a map, and the app returns a **feasibili
 /geothermal-site-feasibility-analyzer  
 │
 ├── backend/  
-│ ├── app.py # Flask backend API server  
-│ ├── data/  
-│ │ ├── heatflow.tif # Heat flow raster file  
-│ │ ├── temperature.tif # Temperature raster file  
-│ │ └── tectonics.geojson # Tectonic plates GeoJSON  
-│ ├── requirements.txt # Python dependencies  
-│ └── utils.py # Helper functions (optional)  
+│ │ ├── app.py # Flask backend API server  
+│ │ ├── data/  
+│ │ │ ├── heatflow.tif # Heat flow raster file  
+│ │ │ ├── temperature.tif # Temperature raster file  
+│ │ │ └── tectonics.geojson # Tectonic plates GeoJSON  
+│ │ ├── requirements.txt # Python dependencies  
+│ │ └── utils.py # Helper functions (optional)  
 │
 ├── frontend/  
-│ ├── src/  
-│ │ ├── components/  
-│ │ │ └── MapInput.jsx # React Leaflet map input component  
+│ │ ├── src/  
+│ │ │ ├── components/  
+│ │ │ │ └── MapInput.jsx # React Leaflet map input component  
 │ │ ├── App.jsx # React main app component  
 │ │ ├── index.jsx # React app entry point  
 │ │ └── styles.css # CSS styles  
