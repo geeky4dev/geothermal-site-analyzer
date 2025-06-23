@@ -31,16 +31,16 @@ Users can input coordinates or click on a map, and the app returns a **feasibili
 │ │ │ ├── heatflow.tif # Heat flow raster file  
 │ │ │ ├── temperature.tif # Temperature raster file  
 │ │ │ └── tectonics.geojson # Tectonic plates GeoJSON  
-│ │ ├── requirements.txt # Python dependencies  
-│ │ └── utils.py # Helper functions (optional)  
+│ ├── requirements.txt # Python dependencies  
+│ └── utils.py # Helper functions (optional)  
 │
 ├── frontend/  
 │ │ ├── src/  
 │ │ │ ├── components/  
 │ │ │ │ └── MapInput.jsx # React Leaflet map input component  
-│ │ ├── App.jsx # React main app component  
-│ │ ├── index.jsx # React app entry point  
-│ │ └── styles.css # CSS styles  
+│ │ │ ├── App.jsx # React main app component  
+│ │ │ ├── index.jsx # React app entry point  
+│ │ │ └── styles.css # CSS styles  
 │ ├── public/  
 │ ├── package.json # Frontend dependencies and scripts  
 │ └── vite.config.js # Vite config (if using Vite)  
