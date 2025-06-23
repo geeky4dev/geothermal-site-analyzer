@@ -130,7 +130,7 @@ GeoPandas Docs
 Feel free to open issues or submit pull requests! All contributions welcome.
 ________________________________________
 📄 License
-MIT License — use freely, with attribution. Contributions welcome!
-Made by geeky4dev with ☀️ and ❤️ for renewable energy enthusiasts!
+MIT License — use freely, with attribution. Contributions welcome!  
+Made by geeky4dev with ☀️ and ❤️ for renewable energy enthusiasts!  
 
-🙌 Happy coding and may your geothermal sites be super feasible! 🌍🔥  
+🙌 Happy coding and may your geothermal sites be super feasible! 🌍🔥    
