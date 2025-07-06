@@ -9,6 +9,10 @@ Users can input coordinates or click on a map, and the app returns a **feasibili
 
 ---
 
+![geothermalanalyzer](https://github.com/user-attachments/assets/7e5a2c55-cca4-463c-8b70-7fef1df9e555)
+
+---
+
 ## 🛠️ Tech Stack  
 
 - **Frontend:** React + Leaflet.js (interactive map, user input, data visualization)    
