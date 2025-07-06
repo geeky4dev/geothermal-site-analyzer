@@ -4,7 +4,7 @@
 
 ## 🚀 Project Overview  
 
-This project is a **simple Fullstack Web Application** that helps users evaluate the feasibility of a geothermal site based on location input.    
+This project is a **simple Fullstack Web Application** that helps users evaluate the feasibility of a geothermal site based on location input.     
 Users can input coordinates or click on a map, and the app returns a **feasibility score** using geological, terrain, and climate data.  
 
 ---
