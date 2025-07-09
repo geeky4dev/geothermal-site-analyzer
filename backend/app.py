@@ -9,14 +9,17 @@ from pyproj import Transformer
 import os
 
 app = Flask(__name__)
-CORS(app)  # Permite llamadas CORS desde el frontend
 
-# Cargar datos geoespaciales al iniciar
+# Configurar CORS para aceptar solicitudes solo desde el frontend, puedes cambiar el origen a tu dominio
+CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5173", "https://geothermal-site-analyzer-frontend.onrender.com"]}}, supports_credentials=True)
+
+# Cargar datos geoespaciales al iniciar la app
 try:
     heatflow_raster = rasterio.open('data/heatflow.tif')
     temperature_raster = rasterio.open('data/temperature.tif')
     tectonics_gdf = gpd.read_file('data/tectonics.geojson')
 
+    # Normalizar CRS a EPSG:4326 (WGS84)
     if tectonics_gdf.crs != "EPSG:4326":
         tectonics_gdf = tectonics_gdf.to_crs("EPSG:4326")
 
@@ -47,7 +50,7 @@ def point_in_tectonics(lon, lat):
 
 @app.route('/api/score', methods=['POST'])
 def calculate_score():
-    data = request.json
+    data = request.json or {}
     lon = data.get('lon')
     lat = data.get('lat')
 
@@ -91,11 +94,12 @@ def calculate_score():
         traceback.print_exc()
         return jsonify({"error": "Internal server error."}), 500
 
-
 if __name__ == '__main__':
-    debug_mode = os.environ.get('FLASK_ENV') == 'development'
+    debug_mode = os.environ.get('FLASK_ENV', '').lower() == 'development'
     port = int(os.environ.get('PORT', 5001))
     app.run(host='0.0.0.0', port=port, debug=debug_mode)
+
+
 
 
 
