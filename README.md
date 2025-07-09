@@ -9,7 +9,8 @@ Users can input coordinates or click on a map, and the app returns a **feasibili
 
 ---
 
-![geothermalanalyzer](https://github.com/user-attachments/assets/7e5a2c55-cca4-463c-8b70-7fef1df9e555)
+![geothermal](https://github.com/user-attachments/assets/13a012b3-0e35-4b0e-8e4f-eda8f2b65b0c)
+
 
 ---
 
