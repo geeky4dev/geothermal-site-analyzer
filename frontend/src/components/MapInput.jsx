@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import axios from 'axios'
 
+// Leer variable de entorno de Vite
+const apiUrl = import.meta.env.VITE_API_URL
+
 function LocationMarker({ onSelect }) {
   const [position, setPosition] = useState(null)
 
@@ -12,9 +15,7 @@ function LocationMarker({ onSelect }) {
     },
   })
 
-  return position === null ? null : (
-    <Marker position={position}></Marker>
-  )
+  return position === null ? null : <Marker position={position} />
 }
 
 export default function MapInput() {
@@ -25,13 +26,14 @@ export default function MapInput() {
   const handleSelect = async (latlng) => {
     setError(null)
     try {
-      const res = await axios.post('http://localhost:5001/api/score', {
+      const res = await axios.post(`${apiUrl}/score`, {
         lat: latlng.lat,
         lon: latlng.lng,
       })
       setScore(res.data.score)
-      setFeasibility(res.data.feasible)  // "Low", "Medium", or "High"
+      setFeasibility(res.data.feasible)
     } catch (e) {
+      console.error(e)
       setError('Error fetching data')
     }
   }
@@ -52,9 +54,7 @@ export default function MapInput() {
   return (
     <>
       <MapContainer center={[0, 0]} zoom={2} style={{ height: '400px', width: '100%' }}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <LocationMarker onSelect={handleSelect} />
       </MapContainer>
       <div style={{ marginTop: '1em' }}>
@@ -75,6 +75,8 @@ export default function MapInput() {
     </>
   )
 }
+
+
 
 
 
