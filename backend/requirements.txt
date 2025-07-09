@@ -4,3 +4,4 @@ geopandas
 rasterio
 shapely
 numpy
+pyproj

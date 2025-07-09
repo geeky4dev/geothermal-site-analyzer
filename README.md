@@ -4,17 +4,12 @@
 
 ## 🚀 Project Overview  
 
-This project is a **simple Fullstack Web Application** that helps users evaluate the feasibility of a geothermal site based on location input.     
-Users can input coordinates or click on a map, and the app returns a **feasibility score** using geological, terrain, and climate data.  
+This project is a **simple Fullstack Web Application** that helps users evaluate the feasibility of a geothermal site based on location input.  
+Users can input coordinates or click on a map, and the app returns a **feasibility score** using geological, terrain, and climate data.
 
 ---
 
-![geothermal](https://github.com/user-attachments/assets/13a012b3-0e35-4b0e-8e4f-eda8f2b65b0c)
-
-
----
-
-## 🛠️ Tech Stack  
+## 🛠️ Tech Stack
 
 - **Frontend:** React + Leaflet.js (interactive map, user input, data visualization)    
 - **Backend:** Flask (Python) + Geospatial libraries (GDAL, Rasterio, GeoPandas)    
@@ -30,25 +25,25 @@ Users can input coordinates or click on a map, and the app returns a **feasibili
 
 /geothermal-site-feasibility-analyzer  
 │
-├── backend/  
-│ │ ├── app.py # Flask backend API server  
-│ │ ├── data/  
-│ │ │ ├── heatflow.tif # Heat flow raster file  
-│ │ │ ├── temperature.tif # Temperature raster file  
-│ │ │ └── tectonics.geojson # Tectonic plates GeoJSON  
-│ ├── requirements.txt # Python dependencies  
-│ └── utils.py # Helper functions (optional)  
+├── backend/
+│ ├── app.py # Flask backend API server
+│ ├── data/
+│ │ ├── heatflow.tif # Heat flow raster file
+│ │ ├── temperature.tif # Temperature raster file
+│ │ └── tectonics.geojson # Tectonic plates GeoJSON
+│ ├── requirements.txt # Python dependencies
+│ └── utils.py # Helper functions (optional)
 │
-├── frontend/  
-│ │ ├── src/  
-│ │ │ ├── components/  
-│ │ │ │ └── MapInput.jsx # React Leaflet map input component  
-│ │ │ ├── App.jsx # React main app component  
-│ │ │ ├── index.jsx # React app entry point  
-│ │ │ └── styles.css # CSS styles  
-│ ├── public/  
-│ ├── package.json # Frontend dependencies and scripts  
-│ └── vite.config.js # Vite config (if using Vite)  
+├── frontend/
+│ ├── src/
+│ │ ├── components/
+│ │ │ └── MapInput.jsx # React Leaflet map input component
+│ │ ├── App.jsx # React main app component
+│ │ ├── index.jsx # React app entry point
+│ │ └── styles.css # CSS styles
+│ ├── public/
+│ ├── package.json # Frontend dependencies and scripts
+│ └── vite.config.js # Vite config (if using Vite)
 │
 ├── README.md # This file  
 └── .gitignore # Git ignore rules  
@@ -123,19 +118,12 @@ Improve UI/UX with better visualization and tooltips
 Deploy backend and frontend on cloud platforms (Heroku, Render, Vercel)  
 Add caching for geospatial queries  
 
-📚 Useful Links  
-React Docs  
-Leaflet Docs  
-Flask Docs  
-Flask-CORS  
-Rasterio Docs  
-GeoPandas Docs  
+📚 Useful Links
+React Docs
+Leaflet Docs
+Flask Docs
+Flask-CORS
+Rasterio Docs
+GeoPandas Docs
 
-🙌 Contributing
-Feel free to open issues or submit pull requests! All contributions welcome.
-________________________________________
-📄 License
-MIT License — use freely, with attribution. Contributions welcome!  
-Made by geeky4dev with ☀️ and ❤️ for renewable energy enthusiasts!  
-
-🙌 Happy coding and may your geothermal sites be super feasible! 🌍🔥    
+🙌 Happy coding and may your geothermal sites be super feasible! 🌍🔥

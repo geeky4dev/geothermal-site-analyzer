@@ -6,20 +6,22 @@ from shapely.geometry import Point
 import numpy as np
 import traceback
 from pyproj import Transformer
-import os
 
+# Initialize Flask app
 app = Flask(__name__)
-CORS(app)  # Permite llamadas CORS desde el frontend
+CORS(app)  # Enable CORS for all routes (allow frontend access)
 
-# Cargar datos geoespaciales al iniciar
+# Load raster and vector data on startup
 try:
     heatflow_raster = rasterio.open('data/heatflow.tif')
     temperature_raster = rasterio.open('data/temperature.tif')
     tectonics_gdf = gpd.read_file('data/tectonics.geojson')
 
+    # Ensure tectonic data uses WGS84 (lat/lon)
     if tectonics_gdf.crs != "EPSG:4326":
         tectonics_gdf = tectonics_gdf.to_crs("EPSG:4326")
 
+    # Define coordinate transformers
     transformer_heatflow = Transformer.from_crs("EPSG:4326", heatflow_raster.crs, always_xy=True)
     transformer_temperature = Transformer.from_crs("EPSG:4326", temperature_raster.crs, always_xy=True)
 
@@ -28,6 +30,7 @@ except Exception:
     print("❌ Failed to load geospatial data:")
     traceback.print_exc()
 
+# Function to sample value from raster
 def sample_raster(raster, transformer, lon, lat):
     try:
         x, y = transformer.transform(lon, lat)
@@ -41,10 +44,12 @@ def sample_raster(raster, transformer, lon, lat):
         print(f"❌ Raster sampling error: {e}")
         return np.nan
 
+# Function to check if point intersects tectonic zone
 def point_in_tectonics(lon, lat):
     pt = Point(lon, lat)
     return tectonics_gdf.intersects(pt).any()
 
+# Main scoring endpoint
 @app.route('/api/score', methods=['POST'])
 def calculate_score():
     data = request.json
@@ -63,18 +68,21 @@ def calculate_score():
 
         in_fault_zone = point_in_tectonics(lon, lat)
 
-        heatflow_score = max(0, min(1, (heatflow - 40) / 80))   # rango 40–120 mW/m²
-        temp_score = max(0, min(1, (temperature - 5) / 25))     # rango 5–30 °C
+        # Normalized scores (0 to 1 range)
+        heatflow_score = max(0, min(1, (heatflow - 40) / 80))   # Assuming useful range: 40–120 mW/m²
+        temp_score = max(0, min(1, (temperature - 5) / 25))     # Assuming useful range: 5–30 °C
         fault_score = 1 if in_fault_zone else 0
 
+        # Weighted total score
         score = heatflow_score * 50 + temp_score * 40 + fault_score * 10
 
-        print(f"Sampling at lon={lon}, lat={lat}:", flush=True)
-        print(f"  🔥 Heatflow = {heatflow}", flush=True)
-        print(f"  🌡️  Temperature = {temperature}", flush=True)
-        print(f"  ⚠️  In tectonic fault zone = {in_fault_zone}", flush=True)
-        print(f"  Final Score = {score}", flush=True)
+        print(f"Sampling at lon={lon}, lat={lat}:")
+        print(f"  🔥 Heatflow = {heatflow}")
+        print(f"  🌡️  Temperature = {temperature}")
+        print(f"  ⚠️  In tectonic fault zone = {in_fault_zone}")
+        print(f"  Final Score = {score}")
 
+        # Determine feasibility level
         if score < 40:
             feasibility = "🔴 Low"
         elif score < 70:
@@ -91,11 +99,11 @@ def calculate_score():
         traceback.print_exc()
         return jsonify({"error": "Internal server error."}), 500
 
+        
 
+# Run the app
 if __name__ == '__main__':
-    debug_mode = os.environ.get('FLASK_ENV') == 'development'
-    port = int(os.environ.get('PORT', 5001))
-    app.run(host='0.0.0.0', port=port, debug=debug_mode)
+    app.run(port=5001, debug=True)
 
 
 
