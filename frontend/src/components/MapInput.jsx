@@ -17,7 +17,7 @@ const DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon
 
 // Leer variable de entorno de Vite
-const apiUrl = import.meta.env.VITE_API_URL
+const apiUrl = import.meta.env.VITE_API_URL  // Debe terminar en /api
 
 function LocationMarker({ onSelect }) {
   const [position, setPosition] = useState(null)
@@ -58,10 +58,11 @@ export default function MapInput() {
     return 'High geothermal potential (70–100)'
   }
 
+  // Ajustar los valores a los emojis y texto que envía el backend
   const renderFeasibilityLabel = (feasibility) => {
-    if (feasibility === 'Low') return 'Low feasibility: not favorable conditions'
-    if (feasibility === 'Medium') return 'Medium feasibility: partially favorable conditions'
-    if (feasibility === 'High') return 'High feasibility: favorable conditions'
+    if (feasibility === '🔴 Low') return 'Low feasibility: not favorable conditions'
+    if (feasibility === '🟡 Medium') return 'Medium feasibility: partially favorable conditions'
+    if (feasibility === '🟢 High') return 'High feasibility: favorable conditions'
     return ''
   }
 
@@ -89,6 +90,7 @@ export default function MapInput() {
     </>
   )
 }
+
 
 
 
