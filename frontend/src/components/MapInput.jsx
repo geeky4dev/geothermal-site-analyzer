@@ -1,6 +1,20 @@
 import React, { useState } from 'react'
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import axios from 'axios'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+import markerIconPng from 'leaflet/dist/images/marker-icon.png'
+import markerShadowPng from 'leaflet/dist/images/marker-shadow.png'
+
+// Configurar ícono por defecto de Leaflet (para evitar error 404 en producción)
+const DefaultIcon = L.icon({
+  iconUrl: markerIconPng,
+  shadowUrl: markerShadowPng,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+})
+
+L.Marker.prototype.options.icon = DefaultIcon
 
 // Leer variable de entorno de Vite
 const apiUrl = import.meta.env.VITE_API_URL
@@ -75,6 +89,7 @@ export default function MapInput() {
     </>
   )
 }
+
 
 
 

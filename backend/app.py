@@ -11,7 +11,8 @@ import os
 app = Flask(__name__)
 
 # Configurar CORS para aceptar solicitudes solo desde el frontend, puedes cambiar el origen a tu dominio
-CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5173", "https://geothermal-site-analyzer-frontend.onrender.com"]}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": ["https://geothermal-site-analyzer-frontend.onrender.com"]}}, supports_credentials=True)
+
 
 # Cargar datos geoespaciales al iniciar la app
 try:
