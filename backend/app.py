@@ -10,17 +10,18 @@ import os
 
 app = Flask(__name__)
 
-# Configurar CORS para aceptar solicitudes solo desde el frontend, puedes cambiar el origen a tu dominio
-CORS(app, resources={r"/*": {"origins": ["https://geothermal-site-analyzer-frontend.onrender.com"]}}, supports_credentials=True)
+# ✅ CORS: permitir el dominio del frontend de Render y opciones preflight
+CORS(app, resources={r"/api/*": {"origins": [
+    "https://geothermal-site-analyzer-frontend.onrender.com",
+    "http://localhost:5173"  # opcional: permite seguir funcionando en local
+]}}, supports_credentials=True)
 
-
-# Cargar datos geoespaciales al iniciar la app
+# 🔁 Cargar datos al iniciar
 try:
     heatflow_raster = rasterio.open('data/heatflow.tif')
     temperature_raster = rasterio.open('data/temperature.tif')
     tectonics_gdf = gpd.read_file('data/tectonics.geojson')
 
-    # Normalizar CRS a EPSG:4326 (WGS84)
     if tectonics_gdf.crs != "EPSG:4326":
         tectonics_gdf = tectonics_gdf.to_crs("EPSG:4326")
 
@@ -32,6 +33,7 @@ except Exception:
     print("❌ Failed to load geospatial data:")
     traceback.print_exc()
 
+# 🔎 Función auxiliar para muestreo de ráster
 def sample_raster(raster, transformer, lon, lat):
     try:
         x, y = transformer.transform(lon, lat)
@@ -45,12 +47,17 @@ def sample_raster(raster, transformer, lon, lat):
         print(f"❌ Raster sampling error: {e}")
         return np.nan
 
+# ⚠️ Verificar si el punto está en una falla tectónica
 def point_in_tectonics(lon, lat):
     pt = Point(lon, lat)
     return tectonics_gdf.intersects(pt).any()
 
-@app.route('/api/score', methods=['POST'])
+# ✅ Endpoint para calcular el puntaje y factibilidad
+@app.route('/api/score', methods=['POST', 'OPTIONS'])
 def calculate_score():
+    if request.method == 'OPTIONS':
+        return '', 204  # ✅ Necesario para que CORS no falle
+
     data = request.json or {}
     lon = data.get('lon')
     lat = data.get('lat')
@@ -67,17 +74,17 @@ def calculate_score():
 
         in_fault_zone = point_in_tectonics(lon, lat)
 
-        heatflow_score = max(0, min(1, (heatflow - 40) / 80))   # rango 40–120 mW/m²
-        temp_score = max(0, min(1, (temperature - 5) / 25))     # rango 5–30 °C
+        heatflow_score = max(0, min(1, (heatflow - 40) / 80))   # 40–120 mW/m²
+        temp_score = max(0, min(1, (temperature - 5) / 25))     # 5–30 °C
         fault_score = 1 if in_fault_zone else 0
 
         score = heatflow_score * 50 + temp_score * 40 + fault_score * 10
 
-        print(f"Sampling at lon={lon}, lat={lat}:", flush=True)
-        print(f"  🔥 Heatflow = {heatflow}", flush=True)
-        print(f"  🌡️  Temperature = {temperature}", flush=True)
-        print(f"  ⚠️  In tectonic fault zone = {in_fault_zone}", flush=True)
-        print(f"  Final Score = {score}", flush=True)
+        print(f"📍 Sampling at lon={lon}, lat={lat}")
+        print(f"  🔥 Heatflow = {heatflow}")
+        print(f"  🌡️  Temperature = {temperature}")
+        print(f"  ⚠️  In fault zone = {in_fault_zone}")
+        print(f"  📊 Final Score = {score}")
 
         if score < 40:
             feasibility = "🔴 Low"
@@ -95,10 +102,12 @@ def calculate_score():
         traceback.print_exc()
         return jsonify({"error": "Internal server error."}), 500
 
+# 🔧 Ejecutar localmente
 if __name__ == '__main__':
     debug_mode = os.environ.get('FLASK_ENV', '').lower() == 'development'
     port = int(os.environ.get('PORT', 5001))
     app.run(host='0.0.0.0', port=port, debug=debug_mode)
+
 
 
 
