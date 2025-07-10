@@ -10,11 +10,7 @@ import os
 
 app = Flask(__name__)
 
-# ✅ CORS: permitir el dominio del frontend de Render y opciones preflight
-CORS(app, resources={r"/api/*": {"origins": [
-    "https://geothermal-site-analyzer-frontend.onrender.com",
-    "http://localhost:5173"  # opcional: permite seguir funcionando en local
-]}}, supports_credentials=True)
+CORS(app)
 
 # 🔁 Cargar datos al iniciar
 try:
